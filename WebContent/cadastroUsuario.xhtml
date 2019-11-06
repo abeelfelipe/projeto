@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Gerencia Usuario</title>
+</h:head>
+<h:body>
+	<ui:fragment rendered="#{loginBean.logado}">
+		<div id="bordas">
+			<p:menubar>
+				<p:menuitem value="Cadastro de Usuarios" url="cadastroUsuario.xhtml" />
+				<f:facet name="options">
+					<p:commandButton action="#{loginBean.logout}" value="Logout"
+						icon="pi pi-home" />
+				</f:facet>
+			</p:menubar>
+			<b:container id="container">
+				<br />
+				<hr />
+				<br />
+				<br />
+				<br />
+				<h1>
+					<h:outputText value="Cadastrar usuario" />
+				</h1>
+				<h:form>
+					<p:button value="Novo Usuario" id="new"
+						outcome="/cadastroUsuario.xhtml" />
+				</h:form>
+				<br />
+				<br />
+				<h:form id="formPanel">
+					<p:panel id="panel" header="Adicionar usuario">
+						<p:messages id="msg" closable="true" for="salvar">
+							<p:autoUpdate />
+						</p:messages>
+						<h:panelGrid columns="3" cellpadding="5">
+							<p:outputLabel value="Nome" />
+							<p:inputText id="nome" value="#{usuarioBean.usuario.nome}"
+								label="nome">
+							</p:inputText>
+							<br />
+
+							<p:outputLabel value="E-mail" />
+							<p:inputText id="email" value="#{usuarioBean.usuario.email}"
+								label="email">
+							</p:inputText>
+							<br />
+							<p:outputLabel value="senha" />
+							<p:password id="senha" value="#{usuarioBean.usuario.senha}"
+								label="senha">
+							</p:password>
+							<br />
+						</h:panelGrid>
+						<p:commandButton id="salvar" value="Salvar" update="container"
+							action="#{usuarioBean.save}" />
+					</p:panel>
+				</h:form>
+				<h:form id="formDataTable">
+					<p:dataTable id="tbl" var="usuario"
+						value="#{usuarioBean.usuarioList}" rows="5"
+						style="margin-bottom:20px" paginatorAlwaysVisible="false"
+						paginator="true" emptyMessage="Nenhum usuário cadastrado."
+						paginatorPosition="bottom">
+						<p:column headerText="Codigo do usuario">
+							<h:outputText value="#{usuario.id}" />
+						</p:column>
+						<p:column headerText="Nome">
+							<h:outputText value="#{usuario.nome}" />
+						</p:column>
+						<p:column headerText="Email">
+							<h:outputText value="#{usuario.email}" />
+						</p:column>
+						<p:column headerText="Editar">
+
+							<p:commandButton action="#{usuarioBean.edit(usuario)}"
+								value="Editar" update="formPanel" />
+							<p:commandButton action="#{usuarioBean.delete(usuario)}"
+								value="Excluir" update="tbl" />
+
+						</p:column>
+						<p:column headerText="Telefones">
+							<p:commandButton value="Telefones"
+								action="#{telefoneBean.cadastroTelefone(usuario)}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</b:container>
+		</div>
+	</ui:fragment>
+	<h:form rendered="#{not loginBean.logado}">
+				<p:dialog header="Faça login para contiuar" id="dialog" minWidth="400" width="500"
+				modal="true" closable="false" position="center" showEffect="fade"
+				draggable="true" resizable="false" visible="true">
+				<h:form id="form">
+					<p:button value="Fazer login" outcome="/login" />
+				</h:form>
+			</p:dialog>
+	</h:form>
+</h:body>
+</html>

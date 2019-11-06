@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Gerencia Telefone do Usuario</title>
+</h:head>
+<h:body>
+	<ui:fragment rendered="#{loginBean.logado}">
+		<div id="bordas">
+			<p:menubar>
+				<p:menuitem value="Cadastro de Usuarios" url="cadastroUsuario.xhtml" />
+				<f:facet name="options">
+					<p:commandButton action="#{loginBean.logout}" value="Logout"
+						icon="pi pi-home" />
+				</f:facet>
+			</p:menubar>
+			<b:container id="container">
+				<br />
+				<hr />
+				<br />
+				<br />
+				<br />
+				<h1>
+					<h:outputText value="Cadastrar Telefones" />
+				</h1>
+				<br />
+				<br />
+				<h:form id="formPanel">
+					<p:panel id="panel" header="Adicionar telefones">
+							<p:messages id="msg" closable="true" for="salvar">
+								<p:autoUpdate disabled="true"/>
+							</p:messages>
+						<h:panelGrid columns="3" cellpadding="5">
+							<p:outputLabel value="Usuario" />
+							<p:inputText value="#{telefoneBean.telefone.usuario.nome}"
+								readonly="true" />
+							<br />
+							<p:outputLabel value="DDD" />
+							<p:inputText id="ddd" value="#{telefoneBean.telefone.ddd}"
+								label="ddd" maxlength="2">
+							</p:inputText>
+							<br />
+
+							<p:outputLabel value="Numero" />
+							<p:inputText id="numero" value="#{telefoneBean.telefone.numero}"
+								label="numero" maxlength="9">
+							</p:inputText>
+							<br />
+							<p:outputLabel value="Tipo" />
+							<p:inputText id="tipo" value="#{telefoneBean.telefone.tipo}"
+								label="tipo" />
+							<br />
+						</h:panelGrid>
+						<p:commandButton id="salvar" value="Salvar" update="container"
+							action="#{telefoneBean.save}" />
+					</p:panel>
+				</h:form>
+				<h:form id="formDataTable">
+					<p:dataTable id="tbl" var="telefone"
+						value="#{telefoneBean.telefoneList}" rows="5"
+						style="margin-bottom:20px" paginatorAlwaysVisible="false"
+						paginator="true" emptyMessage="Nenhum telefone cadastrado."
+						paginatorPosition="bottom">
+						<p:column headerText="Telefone">
+							<h:outputText value="#{telefone.ddd} - #{telefone.numero}" />
+						</p:column>
+						<p:column headerText="tipo">
+							<h:outputText value="#{telefone.tipo}" />
+						</p:column>
+						<p:column headerText="Editar">
+
+							<p:commandButton action="#{telefoneBean.edit(telefone)}"
+								value="Editar" update="formPanel" />
+							<p:commandButton action="#{telefoneBean.delete(telefone)}"
+								value="Excluir" update="tbl" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+			</b:container>
+		</div>
+	</ui:fragment>
+	<h:form rendered="#{not loginBean.logado}">
+				<p:dialog header="Faça login para contiuar" id="dialog" minWidth="400" width="500"
+				modal="true" closable="false" position="center" showEffect="fade"
+				draggable="true" resizable="false" visible="true">
+				<h:form id="form">
+					<p:button value="Fazer login" outcome="/login" />
+				</h:form>
+			</p:dialog>
+	</h:form>
+</h:body>
+</html>
